@@ -1,17 +1,22 @@
 import React from 'react'
+import { Layout } from 'antd';
 
-const Layout = (props) => {
+const { Header, Content } = Layout;
+
+const LayoutView = (props) => {
 
     return (
         <>
-            <div id="sider-container">
-                {props.sider}
-            </div>
-            <div id="search-result-container">
-                {props.content}
-            </div>
+            <Layout id="root-layout">
+                <Header id="search-layout-header" >
+                    {props.sider}
+                </Header>
+                <Content id="search-layout-content-container">
+                    {props.content}
+                </Content>
+            </Layout>
         </>
     )
 }
 
-export default Layout
+export default LayoutView

@@ -1,12 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios';
 
+const baseURL = 'http://www.omdbapi.com/?apikey=c54a0aa0';
+
 export const searchMovie = createAsyncThunk('search/searchMovie', async( searchParams, { rejectWithValue }) => {
     try {
-        console.log(searchParams);
+        // const splittedParams = searchParams.split(" ");
+        // console.log(splittedParams);
+        // const joinedParams = splittedParams.join("&");
+        // console.log(joinedParams);
+
         const config = {
             method: 'get',
-            // url: `${configs.baseUrl}/auth/pending_users`,
+            url: `${baseURL}&s=${searchParams}`,
         };
           
         const response = await axios(config);
@@ -33,10 +39,14 @@ const searchSlice = createSlice({
             state.status = 'loading'
         },
         [searchMovie.fulfilled]: (state, action) => {
-            state.status = 'succeeded';
-            state.error = null;
-            if(action.payload.data){
-                state.pendingList = action.payload.data.foundPendings;
+            if(action.payload.data.Response === "True"){
+                state.status = 'succeeded';
+                state.error = null;
+                state.searchResult = action.payload.data.Search;
+            }
+            else if(action.payload.data.Response === "False"){
+                state.status = 'failed';
+                state.error = action.payload.data.Error;
             }
         },
         [searchMovie.rejected]: (state, action) => {

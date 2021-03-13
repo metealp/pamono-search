@@ -1,14 +1,21 @@
-import React from 'react'
+import React from 'react';
+import { useDispatch } from 'react-redux'
+import { Input } from 'antd';
 
-const Form = () => {
+import { searchMovie } from "./searchSlice.js"
 
+const FormView = () => {
+    const dispatch = useDispatch();
+    const onSearch = async (values) => {
+        dispatch(searchMovie(values))
+    };
     return (
         <>
-            <div id="form-container">
-                "Form"
-            </div>
+            <Input.Search placeholder="Search our outstanding movie archive with more than 10,000 movies!" 
+            onSearch={onSearch} 
+            enterButton />
         </>
     )
 }
 
-export default Form
+export default FormView

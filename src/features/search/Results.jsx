@@ -13,9 +13,8 @@ const Results = () => {
     const dispatch = useDispatch();
 
     const fetchDetail = (movie)=>{
-        dispatch(fetchMovieById(movie.imdbID))
-        console.log(movie)
-        toggleModal()
+        dispatch(fetchMovieById(movie.imdbID));
+        toggleModal();
     }
     const [showModal, setShowModal] = useState(false);
     const toggleModal = () => setShowModal(!showModal)

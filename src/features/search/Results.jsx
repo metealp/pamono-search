@@ -1,8 +1,10 @@
+import React, {useState} from 'react'
 import ResultCard from './ResultCard.jsx';
 import { useSelector } from 'react-redux'
-import { Col, Row, Spin  } from 'antd';
+import { Col, Row, Spin, Modal  } from 'antd';
 import { useDispatch } from 'react-redux'
 import { fetchMovieById } from "./searchSlice.js"
+import DetailModal from "./DetailModal.jsx"
 
 const Results = () => {
     const fetchedMovies = useSelector(state => state.search.searchResult);
@@ -13,8 +15,11 @@ const Results = () => {
     const fetchDetail = (movie)=>{
         dispatch(fetchMovieById(movie.imdbID))
         console.log(movie)
+        toggleModal()
     }
-        
+    const [showModal, setShowModal] = useState(false);
+    const toggleModal = () => setShowModal(!showModal)
+
     let content;
 
     if(status === "idle") {
@@ -30,19 +35,21 @@ const Results = () => {
         content = fetchedMovies.map( movie => <Col onClick={()=>fetchDetail(movie)}><ResultCard  movie={movie} /></Col>)
     }
 
-    // else {
-    //     content = <div className="spinner-container"><Spin size="large"  id="main-spinner" /></div>
-    // }
-
-
-
     return (
         <>
             <div id="search-result-container">
                 <Row align="middle">
                     {content}
                 </Row>
-
+                <Modal
+                    title="Movie Details"
+                    visible={showModal}
+                    onOk={toggleModal}
+                    onCancel={toggleModal}
+                    footer={[]}
+                    >
+                    <DetailModal />
+                </Modal>
             </div>
         </>
     )

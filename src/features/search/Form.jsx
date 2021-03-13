@@ -7,7 +7,9 @@ import { searchMovie } from "./searchSlice.js"
 const FormView = () => {
     const dispatch = useDispatch();
     const onSearch = async (values) => {
-        dispatch(searchMovie(values))
+        if(values){
+            dispatch(searchMovie(values))
+        }
     };
     return (
         <>

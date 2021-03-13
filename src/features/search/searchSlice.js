@@ -36,12 +36,18 @@ const initialState = {
     status: 'idle',
     detailStatus: 'idle',
     error: null,
+    cachedMovieDetails: [],
 }
 
 const searchSlice = createSlice({
     name: "search",
     initialState,
     reducers: {
+        setMovieDetailsFromCache(state, action){
+            state.detailStatus = 'succeeded';
+            state.error = null;
+            state.detailedMovie = action.payload;
+        },
     },
     extraReducers: {
         [searchMovie.pending]: (state, action) => {
@@ -70,6 +76,7 @@ const searchSlice = createSlice({
                 state.detailStatus = 'succeeded';
                 state.error = null;
                 state.detailedMovie = action.payload.data;
+                state.cachedMovieDetails.push(action.payload.data);
             }
             else if(action.payload.data.Response === "False"){
                 state.detailStatus = 'failed';
@@ -85,7 +92,7 @@ const searchSlice = createSlice({
 
 export default searchSlice.reducer
 
-// export const {} = searchSlice.actions
+export const {setMovieDetailsFromCache} = searchSlice.actions
 
 //=============== SELECTORS ===============//
 export const selectAllMovies = state => state.searchResult
